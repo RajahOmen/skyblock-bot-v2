@@ -1,0 +1,28 @@
+{
+  "name": "package",
+  "version": "0.0.1",
+  "description": "Hypixel Guilds management bot",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rajah, Kcroche12",
+  "license": "ISC",
+  "dependencies": {
+    "centra": "^2.4.2",
+    "discord.js": "^12.4.1",
+    "hypixel-api": "^1.2.0",
+    "luxon": "^1.25.0",
+    "node-cache": "^5.1.2",
+    "quickchart-js": "^1.0.7",
+    "request-rate-limiter": "^2.0.3",
+    "smart-request-balancer": "^2.1.1",
+    "sqlite3": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/sqlite3": "^3.1.6",
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1"
+  }
+}

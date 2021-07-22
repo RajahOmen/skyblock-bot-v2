@@ -1,0 +1,206 @@
+{
+    "defaultPrefix": "guild ",
+    "botId": "769759102565613648",
+    "botName": "HyGuilds",
+
+    "invalidCommand": "Unknown command.",
+
+    "finalMessage": "Bot setup!",
+
+    "gexpHistorySaveTime": 180,
+
+    "cacheTTL": 300,
+
+    "commands": [
+        "test1",
+        "test2",
+        ["changeprefix", "prefix"],
+        ["rank", "member", "time"],
+        ["staffrole", "staff"],
+        "guild",
+        ["verify", "link"],
+        "updateusers",
+        "updatemembers",
+        ["event", "war", "competition"],
+        ["updatehours", "sethours", "updatetime", "settime"],
+        ["gexp", "xp", "guildxp", "exp", "experience"],
+        ["pass", "passweek", "givepass"],
+        ["profile", "mainprofile", "skyblockprofile"]
+    ],
+
+    "memberCheckUpdateFrequency": 1,
+
+    "rankBarLength": 60,
+
+    "discordRankHours": [
+        0,
+        336,
+        720,
+        1440,
+        2880,
+        4320,
+        5760,
+        7200,
+        8640,
+        11520,
+        17280
+    ],
+
+    "botDevID": "197429787684372481",
+
+    "rankPriorityCutoff": 6,
+
+    "cute_names": [
+        "apple",
+        "banana",
+        "blueberry",
+        "coconut",
+        "cucumber",
+        "grapes",
+        "kiwi",
+        "lemon",
+        "lime",
+        "mango",
+        "orange",
+        "papaya",
+        "peach",
+        "pear",
+        "pineapple",
+        "pomegranate",
+        "raspberry",
+        "strawberry",
+        "tomato",
+        "watermelon",
+        "zucchini"
+    ],
+
+    "eventEndConditions": [
+        "time",
+        "value",
+        "duration"
+    ],
+
+    "maximumEventParticipants": 150,
+
+    "scaleMaxEventLength": 168,
+
+    "eventIntervalBounds": [15, 360],
+
+    "eventsPerServer": 30,
+
+    "eventsPerUUID": 10,
+
+    "eventTopPercThresh": 0.95,
+
+    "maximumEvents": 50,
+
+    "eventGraphAmount": 10,
+
+    "eventLeaderSize": 20,
+
+    "levelXP": [
+        0, 50, 175, 375, 675, 1175, 1825, 2925, 4425, 6425, 9925, 14925, 22425, 32425, 47425, 67425, 97425, 147425,
+        222425, 322425, 522425, 822425, 1222424, 1722425, 2322425, 3022425, 4722425, 5722425, 6822425, 8022425,
+        9322425, 10722425, 1222425, 13822425, 15522425, 17322425, 19222425, 21222425, 23222425, 25522425, 27822425,
+        30222425, 32722425, 35322425, 35322425, 38072425, 40972425, 44072425, 47472425, 51172425, 55172425, 
+        59472425, 64072425, 68972425, 74172425, 79672425, 85472425, 91572425, 97972425, 104672425, 111672425
+    ],
+
+    "skillCap": {
+        "experience_skill_alchemy": 50, "experience_skill_combat": 60, "experience_skill_enchanting": 60,
+        "experience_skill_farming": 60, "experience_skill_fishing": 50, "experience_skill_foraging": 50,
+        "experience_skill_mining": 60, "experience_skill_taming": 50
+    },
+
+    "eventTypes": {
+        "alchemy": "experience_skill_alchemy",
+        "carpentry": "experience_skill_carpentry",
+        "combat": "experience_skill_combat",
+        "enchanting": "experience_skill_enchanting",
+        "farming": "experience_skill_farming",
+        "fishing": "experience_skill_fishing",
+        "foraging": "experience_skill_foraging",
+        "mining": "experience_skill_mining",
+        "runecrafting": "experience_skill_runecrafting",
+        "taming": "experience_skill_taming",
+        "skillaverage": [
+            "experience_skill_alchemy", "experience_skill_combat", "experience_skill_enchanting",
+            "experience_skill_farming", "experience_skill_fishing", "experience_skill_foraging",
+            "experience_skill_mining", "experience_skill_taming"
+        ],
+        "slayer": ["slayer_bosses.zombie.xp", "slayer_bosses.wolf.xp", "slayer_bosses.wolf.xp"],
+        "revenant": "slayer_bosses.zombie.xp",
+        "sven": "slayer_bosses.wolf.xp",
+        "tarantula": "slayer_bosses.wolf.xp",
+        "mythos": "stats.mythos_kills",
+        "sck": "stats.pet_milestone_sea_creatures_killed",
+        "coins": "coin_purse",
+        "archer": "dungeons.player_classes.archer.experience",
+        "berserk": "dungeons.player_classes.berserk.experience",
+        "healer": "dungeons.player_classes.healer.experience",
+        "mage": "dungeons.player_classes.mage.experience",
+        "tank": "dungeons.player_classes.tank.experience",
+        "catacombs": "dungeons.dungeon_types.catacombs.experience",
+        "blaze": "collection.BLAZE_ROD",
+        "bone": "collection.BONE",
+        "cactus": "collection.CACTUS",
+        "carrot": "collection.CARROT_ITEM",
+        "clay": "collection.CLAY_BALL",
+        "coal": "collection.COAL",
+        "cobblestone": "collection.COBBLESTONE",
+        "diamond": "collection.DIAMOND",
+        "emerald": "collection.EMERALD",
+        "enderpearl": "collection.ENDER_PEARL",
+        "endstone": "collection.ENDER_STONE",
+        "feather": "collection.FEATHER",
+        "ghast": "collection.GHAST_TEAR",
+        "glowstone": "collection.GLOWSTONE_DUST",
+        "gold": "collection.GOLD_INGOT",
+        "gravel": "collection.GRAVEL",
+        "ice": "collection.ICE",
+        "ink": "collection.INK_SACK",
+        "cocoa": "collection.INK_SACK:3",
+        "lapis": "collection.INK_SACK:4",
+        "iron": "collection.IRON_INGOT",
+        "leather": "collection.LEATHER",
+        "oak": "collection.LOG",
+        "birch": "collection.LOG_2",
+        "dark": "collection.LOG_2:1",
+        "spruce": "collection.LOG:1",
+        "acacia": "collection.LOG:2",
+        "jungle": "collection.LOG:3",
+        "magma": "collection.MAGMA_CREAM",
+        "melon": "collection.MELON",
+        "mithril": "collection.MITHRIL_ORE",
+        "mushroom": "collection.MUSHROOM_COLLECTION",
+        "mutton": "collection.MUTTON",
+        "netherwart": "collection.NETHER_STALK",
+        "netherrack": "collection.NETHERRACK",
+        "obsidian": "collection.OBSIDIAN",
+        "pork": "collection.PORK",
+        "potato": "collection.POTATO_ITEM",
+        "crystal": "collection.PRISMARINE_CRYSTALS",
+        "shard": "collection.PRISMARINE_SHARD",
+        "pumpkin": "collection.PUMPKIN",
+        "quartz": "collection.QUARTZ",
+        "rabbit": "collection.RABBIT",
+        "chicken": "collection.RAW_CHICKEN",
+        "fish": "collection.RAW_FISH",
+        "salmon": "collection.RAW_FISH:1",
+        "clownfish": "collection.RAW_FISH:2",
+        "pufferfish": "collection.RAW_FISH:3",
+        "redstone": "collection.REDSTONE",
+        "rottenflesh": "collection.ROTTEN_FLESH",
+        "sand": "collection.SAND",
+        "seeds": "collection.SEEDS",
+        "slime": "collection.SLIME_BALL",
+        "snow": "collection.SNOW_BALL",
+        "spidereye": "collection.SPIDER_EYE",
+        "sponge": "collection.SPONGE",
+        "string": "collection.STRING",
+        "sugarcane": "collection.SUGAR_CANE",
+        "gunpowder": "collection.SULPHUR",
+        "lilypad": "collection.WATER_LILY",
+        "wheat": "collection.WHEAT"
+    }
+}

@@ -379,6 +379,21 @@ async function writeFirst(eventID, uuid, val) {
   }
 }
 
+async function grabXP(minecraftGuildID, dates) {
+  return new Promise((resolve, reject) => {
+    const query = `SELECT uuid, gexp FROM gexp WHERE mcguildid == ?
+    AND time BETWEEN ? AND ?`;
+    console.log(dates);
+    console.log(minecraftGuildID);
+    db.all(query, [minecraftGuildID, dates[0], dates[1]], (err, rows) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(rows);
+    });
+  });
+}
+
 /* function newHours(array) { // sets hours of [uuid, time] format
   const finish = [];
   for (const entry of array) {
@@ -425,6 +440,7 @@ module.exports = {
   sortedList,
   placement,
   fastDiscordIDStore,
+  grabXP,
   reducePasses,
   firstValue,
   writeFirst,

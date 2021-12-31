@@ -1,4 +1,3 @@
-
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-multi-str */
 /* eslint-disable linebreak-style */
@@ -502,6 +501,124 @@ async function elog(log) { // does event debug logging if debug log enabled
   }
 }
 
+async function weeklyGEXPList(guild, week) { // returns list of xp a everyone has got that week
+  const curWeek = await i.data.getValue('info', 'id', 1, 'lastdate');
+  const oldTime = parseInt(curWeek.lastdate) - (600000 + 604800000 * (week + 1));
+  const time = [oldTime, (oldTime + 605400000)];
+  const xpData = await i.data.grabXP(guild, time);
+  const perUUID = {};
+  for (const entry of xpData) {
+    if (perUUID[entry.uuid] == null) {
+      perUUID[entry.uuid] = entry.gexp;
+    } else {
+      // eslint-disable-next-line operator-assignment
+      perUUID[entry.uuid] = perUUID[entry.uuid] + entry.gexp;
+    }
+  }
+
+  const perUser = {};
+  const promArr = [];
+  for (const entry in perUUID) {
+    promArr.push(i.mc.mojangAPI(entry).then((userObj) => {
+      perUser[userObj.username] = perUUID[entry];
+    }));
+  }
+
+  const test = await Promise.all(promArr);
+  console.log(test);
+
+  //const sortedPlayers = Object.entries(perUser).sort(([, a], [, b]) => b - a);
+
+  //console.log(sortedPlayers);
+  //return sortedPlayers;
+}
+
+async function leaderboardMessage(msg, members, title, name, header, cut) {
+  const chunkArray = (array, chunkSize) => {
+    const numberOfChunks = Math.ceil(array.length / chunkSize);
+    return [...Array(numberOfChunks)]
+      .map((value, index) => {
+        return array.slice(index * chunkSize, (index + 1) * chunkSize);
+      });
+  };
+
+  const output = [header];
+  let cutOff = false;
+  for (const index in members) {
+    const member = members[index];
+    if (cut !== 0) {
+      if (member[0] >= cut) {
+        let spacing = '';
+        if (parseInt(index) + 1 <= 9) {
+          spacing = ' ';
+        }
+        let coloring;
+        if (index % 2 === 0) {
+          coloring = '+';
+        } else {
+          coloring = '-';
+        }
+        const namem = i.sprintf('%-24s', `${coloring}  ${parseInt(index) + 1}${spacing}  ${member[1]}`);
+        const finalMember = namem.concat(member[0]);
+        output.push(finalMember);
+      } else {
+        cutOff = true;
+      }
+    } else {
+      let spacing = '';
+      if (parseInt(index) + 1 <= 9) {
+        spacing = ' ';
+      }
+      let coloring;
+      if (index % 2 === 0) {
+        coloring = '+';
+      } else {
+        coloring = '-';
+      }
+      const namem = i.sprintf('%-24s', `${coloring}  ${parseInt(index) + 1}${spacing}  ${member[1]}`);
+      const finalMember = namem.concat(member[0]);
+      output.push(finalMember);
+    }
+  }
+  let size = 26;
+  if (cut !== 0) {
+    output.push(`Values less than ${cut} hidden.`);
+    if (output.length === (26 + 1)) {
+      size += 1;
+    }
+  }
+
+  const splitMembers = chunkArray(output, size);
+  const fields = [];
+  let endIndex = 0;
+  for (const index in splitMembers) {
+    let input;
+    if (index === 0) {
+      input = {
+        name: `${name}`,
+        value: '```diff\n' + `${splitMembers[index].join('\n')}` + '```',
+      };
+    } else {
+      let subtractValue = 1;
+      if (splitMembers[index].length !== 26 && cutOff === true) {
+        subtractValue = 2;
+      }
+      input = {
+        name: `${endIndex} - ${endIndex + splitMembers[index].length - subtractValue}`,
+        value: '```diff\n' + `${splitMembers[index].join('\n')}` + '```',
+      };
+    }
+    endIndex += splitMembers[index].length;
+    fields.push(input);
+  }
+  const gexpMessage = new i.Discord.MessageEmbed()
+    .setColor('#138509')
+    .setTitle(title)
+    .addFields(fields)
+    .setFooter('Finest spaghetti');
+  msg.channel.send(gexpMessage);
+}
+
 // RESPONSE FUNCTIONS //
 
 async function verify(msg, command) { // handles minecraft account verification
@@ -516,7 +633,8 @@ async function verify(msg, command) { // handles minecraft account verification
         cooldownCache.set(coolForm(msg.author.id, 'verify'), Date.now()); // no api spam cache
         if (hyObj.player != null) {
           const discord = 'DISCORD';
-          if (hyObj.player.socialMedia != null && hyObj.player.socialMedia.links[discord] != null) {
+          if (hyObj.player.socialMedia != null && hyObj.player.socialMedia.links != null
+            && hyObj.player.socialMedia.links[discord] != null) {
             if (hyObj.player.socialMedia.links[discord] === msg.author.tag) { // they are linked.
               const discordID = await i.data.getValue('users', 'uuid', hyObj.player.uuid, 'discordid');
               if (discordID != null) { // if someone already has account in database
@@ -1282,10 +1400,14 @@ async function overrideProfile(msg, command) { // overrides main profile to the 
   }
 }
 
-// EVENT FUNCTIONS //
+async function kickList(msg) {
+  const play = await weeklyGEXPList('5eb4d01f8ea8c94128915a85', 0);
+}
 
+// EVENT FUNCTIONS //
+// the idea is you could
 async function eventUnconfirm() { // removes unconfirmed events from database.
-  const unconfirmed = await i.data.getValue('eventinfo', 'confirmed', 'false', 'event_id')
+  const unconfirmed = await i.data.getValue('eventinfo', 'confirmed', 'false', 'event_id');
   const events = [unconfirmed];
   for (const event of events.flat()) {
     i.data.deleteValue('eventinfo', 'event_id', event.event_id);
@@ -1802,9 +1924,9 @@ async function eventUpdate(updateArr, time) { // updates given events
         if (main != null && main.mainprofile != null) profile = main.mainprofile;
         const args = {
           id: e.event_id,
-          uuid: uuid,
+          uuid,
           track: e.track_type,
-          time: time,
+          time,
           prof: profile,
           condition: e.condition,
           last: index - -1 === order.length,
@@ -2144,7 +2266,7 @@ async function eventReact(react, user) { // handles reactions given to event mes
               const mainprof = await i.data.getValue('members', 'uuid', uuid, 'mainprofile');
               const args = {
                 id: isEvent.event_id,
-                uuid: uuid,
+                uuid,
                 track: isEvent.track_type,
                 time: isEvent.last_updated,
                 prof: mainprof.mainprofile,
@@ -2195,7 +2317,7 @@ async function eventReact(react, user) { // handles reactions given to event mes
         .setTitle(`[Active Event] ${isEvent.event_name}`)
         .addField(`Top ${i.config.eventLeaderSize} Participants`, '```diff\n' + board + '\n```')
         .setFooter(`[Page 2/3] Last Updated: ${now.toLocaleDateString()} ${now.toLocaleTimeString()} EST`);
-      await message.edit({ embed: embed });
+      await message.edit({ embed });
     } else if (page === '2') {
       if (react.emoji.name === '⬅️') { // go to page 1
         const cache = eventMsgCache.get(isEvent.event_id);
@@ -2445,8 +2567,8 @@ async function eventCreate(msg, command) { // creates events
   const nameArgs = [
     'event_name', 'start_date', 'perm', 'track_type', 'end_condition',
     'end_value', 'creator_uuid', 'discordguildid', 'started', 'ended',
-    'update_channel', 'message_id', 'participants', 'confirmed', 
-    'creator_discordid', 'value_type'
+    'update_channel', 'message_id', 'participants', 'confirmed',
+    'creator_discordid', 'value_type',
   ];
   formArgs[11] = updateMessage.id;
 
@@ -2582,7 +2704,7 @@ async function eventAdd(msg, command) { // adds people to an event
     alrOnUsers.push(alrAmt);
   }
   if (uuidArr.length > i.config.maximumEventParticipants) {
-    msg.channel.send('Maximum amount of participants in event (150) exceeded.')
+    msg.channel.send('Maximum amount of participants in event (150) exceeded.');
     return;
   }
   if (uuidArr.length > 0) {
@@ -3060,7 +3182,7 @@ async function eventJoin(msg, command) { // joins events if they're public
       const mainprof = await i.data.getValue('members', 'uuid', uuid, 'mainprofile');
       const args = {
         id: e.event_id,
-        uuid: uuid,
+        uuid,
         track: e.track_type,
         time: e.last_updated,
         prof: mainprof.mainprofile,
@@ -3212,7 +3334,7 @@ function eventMain(msg, command) {
 
 async function test1(msg, command) {
   if (isBotDev(msg)) {
-    console.log(i.mc.mojangAPI('ashjfask333'));
+    weeklyGEXPList('5eb4d01f8ea8c94128915a85', 0);
   }
 }
 

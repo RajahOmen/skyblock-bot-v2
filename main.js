@@ -73,7 +73,7 @@ async function minuteFunction() { // executes every minute (see client.once('rea
     const DoW = now.getDay();
     if (DoW === 1) {
       i.data.reducePasses();
-      i.discModule.eventUnconfirm();
+      //i.discModule.eventUnconfirm();
     }
     console.log(`${daysPast} day(s) have passed since lastdate`);
     if (daysPast > 7) {
